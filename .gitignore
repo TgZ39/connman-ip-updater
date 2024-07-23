@@ -2,5 +2,6 @@ DDnsIpUpdater.exe
 last_ip.txt
 wg.config
 ip_updater_config.toml
+DDnsIpUpdater
 
 .idea
