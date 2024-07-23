@@ -16,9 +16,12 @@ func GetLastIp() (net.IP, error) {
 		return nil, err
 	}
 
-	ip := net.ParseIP(string(buf))
+	ipStr := string(buf)
+	ipStr = strings.TrimSpace(ipStr)
+
+	ip := net.ParseIP(ipStr)
 	if ip == nil {
-		return nil, errors.New("file contains invalid IP")
+		return nil, errors.New(fmt.Sprintf("file contains invalid IP: %v", string(buf)))
 	}
 
 	return ip, nil
