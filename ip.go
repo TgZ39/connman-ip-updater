@@ -31,6 +31,7 @@ func SetLastIp(ip net.IP) error {
 	return os.WriteFile(lastIpFile, []byte(ip.String()), 0644)
 }
 
+// ToConnmanService returns given IP as connman service, e.g. 192.168.178.1 -> vpn_192_168_178_1
 func ToConnmanService(ip net.IP) string {
 	ipStr := ip.String()
 	ipStr = strings.ReplaceAll(ipStr, ".", "_")
