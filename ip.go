@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"net"
@@ -8,27 +9,31 @@ import (
 	"strings"
 )
 
-const lastIpFile = "last_ip.txt"
-
-func GetLastIp() (net.IP, error) {
-	buf, err := os.ReadFile(lastIpFile)
+func GetLastIp(configFile string) (net.IP, error) {
+	file, err := os.Open(configFile)
 	if err != nil {
 		return nil, err
 	}
+	defer file.Close()
 
-	ipStr := string(buf)
-	ipStr = strings.TrimSpace(ipStr)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		text := scanner.Text()
 
-	ip := net.ParseIP(ipStr)
-	if ip == nil {
-		return nil, errors.New(fmt.Sprintf("file contains invalid IP: %v", string(buf)))
+		if strings.HasPrefix(text, "Host = ") {
+			ipStr := strings.TrimSpace(text)
+			ipStr = strings.TrimPrefix(ipStr, "Host = ")
+
+			ip := net.ParseIP(ipStr)
+			if ip == nil {
+				return nil, errors.New("invalid IP in wireguard config")
+			}
+
+			return ip, nil
+		}
 	}
 
-	return ip, nil
-}
-
-func SetLastIp(ip net.IP) error {
-	return os.WriteFile(lastIpFile, []byte(ip.String()), 0644)
+	return nil, errors.New("couldn't find \"Host = x.x.x.x\" in wireguard config")
 }
 
 // ToConnmanService returns given IP as connman service, e.g. 192.168.178.1 -> vpn_192_168_178_1
