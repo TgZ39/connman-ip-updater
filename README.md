@@ -1,4 +1,4 @@
-DDNS IP Updater
+Connman IP Updater
 ---
 
 This is a tool which allows you to use [connman vpn](https://github.com/chewitt/connman/blob/master/doc/vpn-config-format.txt) ([Wireguard](https://www.wireguard.com/)) with a DDNS.
