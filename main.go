@@ -6,8 +6,6 @@ import (
 	"os"
 )
 
-const logFilename = "updater.log"
-
 func main() {
 	// set up logging
 	logFile, err := getLogFile()
@@ -76,13 +74,4 @@ func main() {
 	}
 
 	log.Println("successfully updated wireguard tunnel")
-}
-
-func getLogFile() (*os.File, error) {
-	logFile, err := os.OpenFile(logFilename, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
-	if err != nil {
-		log.Println("error opening log file: ", err)
-		return nil, err
-	}
-	return logFile, nil
 }
