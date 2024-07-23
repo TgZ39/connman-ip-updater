@@ -1,4 +1,4 @@
-module DDnsIpUpdater
+module ip_updater
 
 go 1.22
 
