@@ -9,6 +9,7 @@ import (
 const configFile = "ip_updater_config.toml"
 
 type Config struct {
+	Enabled             bool
 	Domain              string
 	WireguardConfigFile string
 }
